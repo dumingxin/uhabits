@@ -3,6 +3,7 @@
 *.class
 *.dex
 *.iml
+*.local
 *.local.*
 *.swp
 *.trace
@@ -20,3 +21,7 @@ captures/
 docs/
 gen/
 local.properties
+crowdin.yaml
+local
+tmp/
+secret/

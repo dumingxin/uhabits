@@ -1,5 +1,43 @@
 # Changelog
 
+### 1.7.6 (July 18, 2017)
+
+* Fix bug that caused widgets not to render sometimes
+* Fix other minor bugs
+* Update translations
+
+### 1.7.3 (May 30, 2017)
+
+* Improve performance of 'sort by score'
+* Other minor bug fixes
+
+### 1.7.2 (May 27, 2017)
+
+* Fix crash at startup
+
+### 1.7.1 (May 21, 2017)
+
+* Fix crash (BadParcelableException)
+* Fix layout for RTL languages such as Arabic
+* Automatically detect and reject invalid database files
+* Add Hebrew translation
+
+### 1.7.0 (Mar 31, 2017)
+
+* Sort habits automatically
+* Allow swiping the header to see previous days
+* Import backups directly from Google Drive or Dropbox
+* Refresh data automatically at midnight
+* Other minor bug fixes and enhancements
+
+### 1.6.2 (Oct 13, 2016)
+
+* Fix crash on Android 4.1
+
+### 1.6.1 (Oct 10, 2016)
+
+* Fix a crash at startup when database is corrupted
+
 ### 1.6.0 (Oct 10, 2016)
 
 * Add option to make notifications sticky
