@@ -34,6 +34,8 @@ public abstract class DateUtils
 
     private static TimeZone fixedTimeZone = null;
 
+    private static Locale fixedLocale = null;
+
     /**
      * Time of the day when the new day starts.
      */
@@ -52,13 +54,12 @@ public abstract class DateUtils
     public static long applyTimezone(long localTimestamp)
     {
         TimeZone tz = getTimezone();
-        long now = new Date(localTimestamp).getTime();
-        return now - tz.getOffset(now);
+        return localTimestamp - tz.getOffset(localTimestamp - tz.getOffset(localTimestamp));
     }
 
     public static String formatHeaderDate(GregorianCalendar day)
     {
-        Locale locale = Locale.getDefault();
+        Locale locale = getLocale();
         String dayOfMonth = Integer.toString(day.get(DAY_OF_MONTH));
         String dayOfWeek = day.getDisplayName(DAY_OF_WEEK, SHORT, locale);
         return dayOfWeek + "\n" + dayOfMonth;
@@ -67,7 +68,7 @@ public abstract class DateUtils
     private static GregorianCalendar getCalendar(long timestamp)
     {
         GregorianCalendar day =
-            new GregorianCalendar(TimeZone.getTimeZone("GMT"));
+            new GregorianCalendar(TimeZone.getTimeZone("GMT"), getLocale());
         day.setTimeInMillis(timestamp);
         return day;
     }
@@ -82,7 +83,7 @@ public abstract class DateUtils
         for (int i = 0; i < wdays.length; i++)
         {
             wdays[i] =
-                day.getDisplayName(DAY_OF_WEEK, format, Locale.getDefault());
+                day.getDisplayName(DAY_OF_WEEK, format, getLocale());
             day.add(DAY_OF_MONTH, 1);
         }
 
@@ -100,7 +101,7 @@ public abstract class DateUtils
 
     /**
      * @return array with weekday names starting according to locale settings,
-     * e.g. [Mo,Di,Mi,Do,Fr,Sa,So] in Europe
+     * e.g. [Mo,Di,Mi,Do,Fr,Sa,So] in Germany
      */
     public static String[] getLocaleDayNames(int format)
     {
@@ -111,7 +112,7 @@ public abstract class DateUtils
         for (int i = 0; i < days.length; i++)
         {
             days[i] = calendar.getDisplayName(DAY_OF_WEEK, format,
-                Locale.getDefault());
+                getLocale());
             calendar.add(DAY_OF_MONTH, 1);
         }
 
@@ -186,13 +187,23 @@ public abstract class DateUtils
     public static long removeTimezone(long timestamp)
     {
         TimeZone tz = getTimezone();
-        long now = new Date(timestamp).getTime();
-        return now + tz.getOffset(now);
+        return timestamp + tz.getOffset(timestamp);
     }
 
     public static void setFixedLocalTime(Long timestamp)
     {
         fixedLocalTime = timestamp;
+    }
+
+    public static void setFixedLocale(Locale locale)
+    {
+        fixedLocale = locale;
+    }
+
+    private static Locale getLocale()
+    {
+        if(fixedLocale != null) return fixedLocale;
+        return Locale.getDefault();
     }
 
     public static Long truncate(TruncateField field, long timestamp)
